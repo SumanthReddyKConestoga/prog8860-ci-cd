@@ -1,6 +1,5 @@
 name: sumanth-ci-pipeline
 
-# Trigger on pushes or PRs to your branch
 on:
   push:
     branches:
@@ -38,6 +37,10 @@ jobs:
         run: |
           docker run -d -p 5000:5000 --name flask-app flask-app
 
-      - name: 🛑 Stop Container
-        run: docker stop flask-app
+      - name: Show Running Containers
+        run: docker ps
 
+      - name: 🛑 Stop & Remove Container
+        run: |
+          docker stop flask-app
+          docker rm flask-app
