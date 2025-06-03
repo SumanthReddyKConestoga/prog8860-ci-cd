@@ -1,3 +1,5 @@
+# <repo-root>/.github/workflows/sumanth-ci-pipeline.yml
+
 name: sumanth-ci-pipeline
 
 on:
@@ -31,7 +33,7 @@ jobs:
         uses: docker/setup-buildx-action@v2
 
       - name: Build Docker Image
-        run: docker build -f app/Dockerfile -t flask-app ./app
+        run: docker build -f app/Dockerfile -t flask-app app
 
       - name: Run Docker Container
         run: |

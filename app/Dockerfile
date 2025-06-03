@@ -1,18 +1,22 @@
-# Use official Python slim image
+# <repo-root>/app/Dockerfile
+
+# 1. Base image
 FROM python:3.9-slim
 
-# Set working directory inside container
+# 2. Set working directory inside container
 WORKDIR /app
 
-# Copy application code
-COPY app/ /app/
+# 3. Copy only requirements.txt (so layer caching works)
+COPY requirements.txt .
 
-# Install Python dependencies
-COPY app/requirements.txt .
+# 4. Install Python dependencies
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Expose Flask’s default port
+# 5. Copy all remaining application files into /app
+COPY . .
+
+# 6. Expose your Flask app port
 EXPOSE 5000
 
-# Command to run the Flask app
+# 7. Default command to run your Flask app
 CMD ["python", "app.py"]
