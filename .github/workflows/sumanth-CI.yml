@@ -28,17 +28,16 @@ jobs:
       - name: 🧪 Run Unit Tests
         run: python -m unittest app/test_app.py
 
-      - name: 🐳 Build Docker Image
-        run: docker build -t flask-app .
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
 
-      - name: 🚀 Run Docker Container
+      - name: Build Docker Image
+        run: docker build -f app/Dockerfile -t flask-app ./app
+
+      - name: Run Docker Container
         run: |
           docker run -d -p 5000:5000 --name flask-app flask-app
-          # Sleep for a few seconds to let the container start
-          sleep 5
-
-      - name: 📋 Show Running Containers
-        run: docker ps
 
       - name: 🛑 Stop Container
         run: docker stop flask-app
+
