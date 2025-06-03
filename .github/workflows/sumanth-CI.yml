@@ -1,0 +1,44 @@
+name: sumanth-ci-pipeline
+
+# Trigger on pushes or PRs to your branch
+on:
+  push:
+    branches:
+      - assignment1-sumanth-9040660
+  pull_request:
+    branches:
+      - assignment1-sumanth-9040660
+
+jobs:
+  build-test-container:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 🔄 Checkout Code
+        uses: actions/checkout@v3
+
+      - name: 🐍 Setup Python 3.11
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+
+      - name: 📦 Install Dependencies
+        run: pip install -r app/requirements.txt
+
+      - name: 🧪 Run Unit Tests
+        run: python -m unittest app/test_app.py
+
+      - name: 🐳 Build Docker Image
+        run: docker build -t flask-app .
+
+      - name: 🚀 Run Docker Container
+        run: |
+          docker run -d -p 5000:5000 --name flask-app flask-app
+          # Sleep for a few seconds to let the container start
+          sleep 5
+
+      - name: 📋 Show Running Containers
+        run: docker ps
+
+      - name: 🛑 Stop Container
+        run: docker stop flask-app
